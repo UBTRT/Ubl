@@ -13093,8 +13093,7 @@ function goToDepositScreen2() {
   
   let methodName = selectedDepositMethod === 'pear' ? 'PEAR PAY' : 
                    selectedDepositMethod === 'dpk' ? 'DPK PAY PAY' : 
-                   selectedDepositMethod === 'unka' ? 'UNKA PT' : 
-                   'QTPI PAY';
+                   'UNKA PT';
   document.getElementById('selectedMethodDisplay').textContent = methodName;
   
   document.getElementById('depositScreen1').classList.remove('active');
@@ -13108,8 +13107,7 @@ function goToDepositScreen3() {
   
   let methodName = selectedDepositMethod === 'pear' ? 'PEAR PAY' : 
                    selectedDepositMethod === 'dpk' ? 'DPK PAY PAY' : 
-                   selectedDepositMethod === 'unka' ? 'UNKA PT' : 
-                   'QTPI PAY';
+                   'UNKA PT';
   document.getElementById('selectedMethodDisplay2').textContent = methodName;
   document.getElementById('selectedAmountDisplay').textContent = selectedDepositAmount.toLocaleString() + ' UGX';
   
