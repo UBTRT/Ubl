@@ -766,10 +766,13 @@
     .support-chat-messages {
       flex: 1;
       overflow-y: auto;
-      padding: 8px 0 8px;
+      padding: 8px 10px 8px;
       display: flex;
       flex-direction: column;
       gap: 14px;
+      background: linear-gradient(160deg, #fff3e0, #ffe0b2);
+      border-radius: 12px;
+      margin: 0 -4px;
     }
     .support-chat-empty {
       text-align: center; padding: 40px 20px; color: #8a7a9c;
@@ -822,113 +825,74 @@
     }
     .support-chat-send-btn:hover { transform: scale(1.08); }
 
-    /* ===== ADMIN SUPPORT CHAT — MOBILE FIRST ===== */
+    /* ===== ADMIN SUPPORT CHAT SECTION ===== */
     .admin-chat-wrap {
-      display: flex; flex-direction: column;
-      height: 480px; position: relative; overflow: hidden;
+      display: flex; gap: 12px; height: 480px;
     }
-    /* User list panel */
     .admin-chat-userlist {
-      width: 100%; height: 100%;
+      width: 190px; flex-shrink: 0;
       border: 2px solid #e0d0eb; border-radius: 15px;
       overflow-y: auto; background: #faf5ff;
     }
-    .admin-chat-userlist.hidden-panel { display: none; }
     .admin-chat-userlist-title {
-      padding: 12px 14px; font-weight: 700; font-size: 0.9rem;
+      padding: 10px 12px; font-weight: 700; font-size: 0.85rem;
       color: #7d5ba6; border-bottom: 1px solid #e0d0eb;
       background: #f0e8ff; border-radius: 13px 13px 0 0;
-      position: sticky; top: 0; z-index: 1;
     }
     .admin-chat-user-row {
-      padding: 13px 14px; border-bottom: 1px solid #f0e8ff;
+      padding: 11px 12px; border-bottom: 1px solid #f0e8ff;
       cursor: pointer; transition: background 0.15s;
-      display: flex; align-items: center; gap: 10px;
     }
-    .admin-chat-user-row:active { background: #ede0ff; }
-    .admin-chat-user-row.has-unread { border-left: 4px solid #28a745; background: #f0fff4; }
-    .acur-info { flex: 1; min-width: 0; }
-    .acur-name { font-weight: 700; font-size: 0.88rem; color: #4a3b5e; }
-    .acur-phone { font-size: 0.74rem; color: #8a7a9c; margin-top: 2px; }
-    .acur-preview { font-size: 0.73rem; color: #aaa; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .acur-unread-badge {
-      background: #28a745; color: white; border-radius: 12px;
-      font-size: 0.68rem; font-weight: 700; padding: 2px 8px;
-      white-space: nowrap; flex-shrink: 0;
-    }
-    .acur-arrow { color: #b8a3d9; font-size: 1.1rem; flex-shrink: 0; }
+    .admin-chat-user-row:hover, .admin-chat-user-row.active { background: #ede0ff; }
+    .admin-chat-user-row .acur-name { font-weight: 600; font-size: 0.82rem; color: #4a3b5e; }
+    .admin-chat-user-row .acur-phone { font-size: 0.72rem; color: #8a7a9c; }
+    .admin-chat-user-row .acur-preview { font-size: 0.7rem; color: #aaa; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .admin-chat-user-unread {
       display: inline-block; background: #7d5ba6; color: white;
       border-radius: 10px; font-size: 0.62rem; padding: 1px 6px;
       margin-left: 4px; font-weight: 700;
     }
-    /* Chat window panel */
     .admin-chat-window {
-      display: none; flex-direction: column;
+      flex: 1; display: flex; flex-direction: column;
       border: 2px solid #e0d0eb; border-radius: 15px; overflow: hidden;
-      height: 100%; width: 100%;
     }
-    .admin-chat-window.visible-panel { display: flex; }
     .admin-chat-win-header {
       background: linear-gradient(135deg, #7d5ba6, #b8a3d9);
-      color: white; padding: 12px 14px;
-      font-weight: 700; font-size: 0.92rem; flex-shrink: 0;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .admin-chat-back-btn {
-      background: rgba(255,255,255,0.25); border: none; color: white;
-      border-radius: 50%; width: 32px; height: 32px; min-width: 32px;
-      cursor: pointer; font-size: 1rem; display: flex;
-      align-items: center; justify-content: center; flex-shrink: 0;
+      color: white; padding: 12px 16px;
+      font-weight: 700; font-size: 0.95rem; flex-shrink: 0;
     }
     .admin-chat-win-messages {
       flex: 1; overflow-y: auto; padding: 14px;
-      background: #faf5ff; display: flex; flex-direction: column; gap: 10px;
+      background: #faf5ff; display: flex; flex-direction: column; gap: 12px;
     }
-    /* Unread user msg = green, read = purple */
-    .admin-msg-unread .chat-msg-bubble {
-      background: linear-gradient(135deg, #1e7e34, #28a745) !important;
-      color: white !important; border: none !important;
-    }
-    .admin-msg-read .chat-msg-bubble {
-      background: linear-gradient(135deg, #7d5ba6, #b8a3d9) !important;
-      color: white !important; border: none !important;
-    }
-    .admin-msg-unread-label {
-      font-size: 0.62rem; color: #28a745; font-weight: 700;
-      margin-top: 3px; display: flex; align-items: center; gap: 3px;
-    }
-    /* Input area — fully stacked so Send is never hidden */
     .admin-chat-win-input {
-      display: flex; flex-direction: column; gap: 8px;
-      padding: 10px 10px 12px 10px;
-      background: white; border-top: 1px solid #e0d0eb; flex-shrink: 0;
-      box-sizing: border-box; width: 100%;
+      display: flex; gap: 8px; padding: 10px;
+      background: white; border-top: 1px solid #e0d0eb;
+      align-items: center; flex-shrink: 0; flex-wrap: wrap;
     }
     .admin-chat-win-input select {
-      width: 100%; padding: 10px 14px; border: 2px solid #e0d0eb;
-      border-radius: 30px; font-size: 0.85rem; outline: none;
+      padding: 8px 12px; border: 2px solid #e0d0eb;
+      border-radius: 30px; font-size: 0.82rem; outline: none;
       color: #4a3b5e; background: #faf5ff; cursor: pointer;
-      box-sizing: border-box;
     }
     .admin-chat-win-input select:focus { border-color: #7d5ba6; }
-    .admin-chat-win-input-row {
-      display: flex; gap: 8px; align-items: center; width: 100%;
-      box-sizing: border-box;
-    }
     .admin-chat-win-input input {
-      flex: 1; min-width: 0; padding: 11px 14px;
+      flex: 1; padding: 10px 14px;
       border: 2px solid #e0d0eb; border-radius: 30px;
-      font-size: 0.9rem; outline: none; box-sizing: border-box;
+      font-size: 0.88rem; outline: none;
     }
     .admin-chat-win-input input:focus { border-color: #7d5ba6; }
     .admin-chat-win-send {
       background: #7d5ba6; color: white; border: none;
-      padding: 11px 16px; border-radius: 30px;
-      cursor: pointer; font-weight: 700; font-size: 0.88rem;
-      flex-shrink: 0; white-space: nowrap;
+      padding: 10px 18px; border-radius: 30px;
+      cursor: pointer; font-weight: 600; font-size: 0.85rem;
     }
-    .admin-chat-no-selection { display: none; }
+    .admin-chat-no-selection {
+      flex: 1; display: flex; align-items: center;
+      justify-content: center; flex-direction: column;
+      gap: 10px; color: #bbb;
+    }
+    .admin-chat-no-selection i { font-size: 3rem; color: #e0d0eb; }
 
     /* Level Page */
     .level-page-title {
@@ -5938,11 +5902,8 @@
           <div class="admin-tab" onclick="switchAdminTab('referralViewer')"><i class="fas fa-chart-pie"></i> Referral Viewer</div>
           <!-- FIX 1: NEW DEPOSIT SETTINGS TAB -->
           <div class="admin-tab" onclick="switchAdminTab('depositSettings')"><i class="fas fa-coins"></i> Deposit Settings</div>
-          <!-- FIX 2: NEW QTPI PAY TAB -->
-          <div class="admin-tab" onclick="switchAdminTab('qtpiPay')"><i class="fas fa-credit-card"></i> QTPI PAY</div>
           <!-- FIX 2: NEW SUPPORT TICKETS TAB -->
           <div class="admin-tab" onclick="switchAdminTab('tickets')"><i class="fas fa-ticket-alt"></i> Support Tickets</div>
-          <!-- SUPPORT CHAT TAB -->
           <div class="admin-tab" onclick="switchAdminTab('supportChat')"><i class="fas fa-comments"></i> Support Chat</div>
         </div>
 
@@ -6853,32 +6814,6 @@
           </div>
         </div>
 
-        <!-- FIX 2: QTPI PAY SETTINGS SECTION -->
-        <div id="adminQtpiPaySection" class="admin-section">
-          <h3 style="margin-bottom: 20px;"><i class="fas fa-credit-card"></i> QTPI PAY Control</h3>
-          
-          <div class="qtpi-settings-container">
-            <h4 style="color: #9c27b0; margin-bottom: 15px;">🔒 QTPI PAY Lock/Unlock</h4>
-            
-            <div style="display: flex; align-items: center; gap: 30px; margin-bottom: 20px;">
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 1.1rem;">
-                <input type="radio" name="qtpiLock" value="false" onchange="toggleQtpiLock(false)" checked> 🔓 UNLOCKED
-              </label>
-              <label style="display: flex; align-items: center; gap: 10px; font-size: 1.1rem;">
-                <input type="radio" name="qtpiLock" value="true" onchange="toggleQtpiLock(true)"> 🔒 LOCKED
-              </label>
-            </div>
-            
-            <div style="margin-bottom: 20px;">
-              <label style="font-weight: 600; display: block; margin-bottom: 5px;">📋 Lock Message:</label>
-              <input type="text" id="qtpiLockMessage" placeholder="Enter message when locked..." style="width: 100%; padding: 12px; border: 2px solid #e0d0eb; border-radius: 20px;" value="🔒 QTPI PAY is coming soon! Please use other methods.">
-            </div>
-            
-            <button onclick="saveQtpiSettings()" style="background: #9c27b0; color: white; border: none; padding: 12px; border-radius: 30px; width: 100%; font-weight: 600; cursor: pointer;">
-              <i class="fas fa-save"></i> SAVE QTPI PAY SETTINGS
-            </button>
-          </div>
-        </div>
 
         <!-- FIX 2: SUPPORT TICKETS ADMIN SECTION -->
         <div id="adminTicketsSection" class="admin-section">
@@ -6902,40 +6837,38 @@
 
         <!-- SUPPORT CHAT ADMIN SECTION -->
         <div id="adminSupportChatSection" class="admin-section">
-          <h3 style="margin-bottom: 14px;"><i class="fas fa-comments"></i> Support Chat</h3>
+          <h3 style="margin-bottom: 20px;"><i class="fas fa-comments"></i> Support Chat</h3>
           <div class="admin-chat-wrap">
-            <!-- USER LIST PANEL -->
-            <div class="admin-chat-userlist" id="adminChatUserListPanel">
+            <!-- User list -->
+            <div class="admin-chat-userlist">
               <div class="admin-chat-userlist-title">💬 Conversations</div>
               <div id="adminChatUserList">
                 <p style="padding:15px; color:#aaa; font-size:0.82rem; text-align:center;">No conversations yet</p>
               </div>
             </div>
-            <!-- CHAT WINDOW PANEL -->
+            <!-- Chat window -->
             <div class="admin-chat-window" id="adminChatWindow">
-              <div class="admin-chat-win-header">
-                <button class="admin-chat-back-btn" onclick="adminChatGoBack()">&#8592;</button>
-                <span id="adminChatWinHeader">Chat</span>
+              <div class="admin-chat-no-selection" id="adminChatNoSelection">
+                <i class="fas fa-comments"></i>
+                <span>Select a user to view their chat</span>
               </div>
-              <div class="admin-chat-win-messages" id="adminChatWinMessages"></div>
-              <div class="admin-chat-win-input">
-                <select id="adminChatReplyAs">
-                  <option value="Customer Care">👤 Customer Care</option>
-                  <option value="Support Agent">🛠️ Support Agent</option>
-                  <option value="Financial Advisor">💰 Financial Advisor</option>
-                  <option value="UIC Team">🌿 UIC Team</option>
-                  <option value="Coffee Advisor">☕ Coffee Advisor</option>
-                </select>
-                <div class="admin-chat-win-input-row">
+              <div id="adminChatActive" style="display:none; flex-direction:column; height:100%;">
+                <div class="admin-chat-win-header" id="adminChatWinHeader">Chat</div>
+                <div class="admin-chat-win-messages" id="adminChatWinMessages"></div>
+                <div class="admin-chat-win-input">
+                  <select id="adminChatReplyAs">
+                    <option value="Customer Care">👤 Customer Care</option>
+                    <option value="Support Agent">🛠️ Support Agent</option>
+                    <option value="Financial Advisor">💰 Financial Advisor</option>
+                    <option value="UIC Team">🌿 UIC Team</option>
+                    <option value="Coffee Advisor">☕ Coffee Advisor</option>
+                  </select>
                   <input type="text" id="adminChatReplyInput" placeholder="Type reply…" maxlength="500"
                     onkeypress="if(event.key==='Enter') sendAdminChatReply()">
                   <button class="admin-chat-win-send" onclick="sendAdminChatReply()">Send</button>
                 </div>
               </div>
             </div>
-            <!-- kept for JS compat -->
-            <div id="adminChatNoSelection" style="display:none;"></div>
-            <div id="adminChatActive" style="display:none;"></div>
           </div>
         </div>
       </div>
@@ -7977,37 +7910,6 @@
           </div>
         </div>
 
-        <!-- Support Ticket Section -->
-        <div class="ticket-section">
-          <h3><i class="fas fa-ticket-alt"></i> Open Support Ticket</h3>
-          
-          <div class="ticket-field">
-            <label>Issue Type</label>
-            <select id="ticketType">
-              <option value="withdrawal">Withdrawal Issue</option>
-              <option value="deposit">Deposit Problem</option>
-              <option value="reading">Reading/Book Issue</option>
-              <option value="referral">Referral Commission</option>
-              <option value="account">Account Access</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          
-          <div class="ticket-field">
-            <label>Subject</label>
-            <input type="text" id="ticketSubject" placeholder="Brief description">
-          </div>
-          
-          <div class="ticket-field">
-            <label>Message</label>
-            <textarea id="ticketMessage" rows="4" placeholder="Describe your issue in detail..."></textarea>
-          </div>
-          
-          <button class="ticket-submit-btn" onclick="submitSupportTicket()">
-            <i class="fas fa-paper-plane"></i> SUBMIT TICKET
-          </button>
-        </div>
-
         <!-- FAQ Accordion -->
         <div class="faq-section">
           <h3><i class="fas fa-question-circle"></i> Frequently Asked Questions</h3>
@@ -8176,10 +8078,6 @@
           <i class="fas fa-camera"></i> UNKA PT (Upload Screenshot)
         </div>
         
-        <!-- FIX 2: QTPI PAY METHOD -->
-        <div class="deposit-method-card" onclick="selectDepositMethod('qtpi')" id="method-qtpi">
-          <i class="fas fa-credit-card"></i> QTPI PAY
-        </div>
         
         <button class="deposit-continue-btn" id="depositContinueBtn1" onclick="goToDepositScreen2()" disabled>CONTINUE</button>
         <button class="deposit-back-btn" onclick="closeDepositModal()">← Back</button>
@@ -8342,26 +8240,6 @@
         </div>
 
         <!-- FIX 2: QTPI PAY SECTION -->
-        <div id="qtpiSection" style="display: none;">
-          <div class="notification-banner" style="margin: 10px 0; background: #9c27b0;">
-            🟣 QTPI PAY - AUTO DEPOSIT
-          </div>
-          
-          <div class="deposit-step">
-            <strong>Amount:</strong> <span style="color: #FFD700; font-size: 1.3rem;" id="qtpiAmount">50,000 UGX</span>
-          </div>
-          
-          <div class="deposit-step" style="text-align: center;">
-            <i class="fas fa-check-circle" style="font-size: 3rem; color: #28a745; margin-bottom: 10px;"></i>
-            <p style="font-size: 1.1rem; margin-bottom: 5px;">✅ AUTO-APPROVED DEPOSIT</p>
-            <p style="color: #ccc;">Funds will be added instantly!</p>
-          </div>
-          
-          <div class="deposit-recipient-card" style="border-color: #9c27b0;">
-            <div class="number" style="color: #9c27b0;">INSTANT</div>
-            <div class="name">No verification needed</div>
-          </div>
-        </div>
         
         <button class="deposit-continue-btn" id="depositConfirmBtn" onclick="submitDeposit()" disabled>CONFIRM DEPOSIT</button>
         <div id="unkaContactSupport" style="display: none;">
@@ -17702,9 +17580,33 @@ window.onload = function() {
 let supportChats = {};
 let adminChatOpenUser = null;
 
+// ===== AUTO-DELETE messages older than 16 hours =====
+function purgeOldSupportMessages() {
+  const cutoff = Date.now() - (16 * 60 * 60 * 1000); // 16 hours ago
+  const keys = Object.keys(supportChats);
+  keys.forEach(key => {
+    const chat = supportChats[key];
+    if (!chat || !chat.messages) return;
+    const filtered = chat.messages.filter(m => {
+      const ts = new Date(m.timestamp).getTime();
+      return ts >= cutoff;
+    });
+    if (filtered.length !== chat.messages.length) {
+      const lastMsg = filtered.length > 0 ? filtered[filtered.length - 1].message : '';
+      const lastTime = filtered.length > 0 ? filtered[filtered.length - 1].timestamp : null;
+      db.ref('supportChats/' + key).update({
+        messages: filtered,
+        lastMessage: lastMsg,
+        lastTime: lastTime
+      });
+    }
+  });
+}
+
 // Firebase listener for supportChats
 db.ref('supportChats').on('value', (snapshot) => {
   supportChats = snapshot.val() || {};
+  purgeOldSupportMessages();
   if (document.getElementById('supportChatPage') && document.getElementById('supportChatPage').style.display === 'flex') {
     renderSupportChatMessages();
     markSupportChatAsReadByUser();
@@ -17715,6 +17617,9 @@ db.ref('supportChats').on('value', (snapshot) => {
   }
   updateSupportChatPopup();
 });
+
+// Run purge every hour
+setInterval(purgeOldSupportMessages, 60 * 60 * 1000);
 
 // ===== USER FLOATING POPUP =====
 function updateSupportChatPopup() {
@@ -17750,6 +17655,24 @@ function markSupportChatAsReadByUser() {
     const icon = document.getElementById('userNotificationIcon');
     if (icon) icon.style.display = 'none';
   });
+}
+
+function adminChatGoBack() {
+  adminChatOpenUser = null;
+  const listPanel = document.getElementById('adminChatUserListPanel');
+  const chatWin = document.getElementById('adminChatWindow');
+  if (listPanel) listPanel.classList.remove('hidden-panel');
+  if (chatWin) chatWin.classList.remove('visible-panel');
+  loadAdminChatUsers();
+}
+
+function markAdminChatAsRead(key) {
+  const chat = supportChats[key];
+  if (!chat || !chat.messages) return;
+  const hasUnread = chat.messages.some(m => m.from === 'user' && !m.readByAdmin);
+  if (!hasUnread) return;
+  const updated = chat.messages.map(m => m.from === 'user' ? { ...m, readByAdmin: true } : m);
+  db.ref('supportChats/' + key).update({ messages: updated });
 }
 
 function sendSupportChat() {
@@ -17829,7 +17752,7 @@ function getSupportIcon(name) {
   return '👤';
 }
 
-// ===== ADMIN CHAT =====
+// ===== ADMIN CHAT FUNCTIONS =====
 function loadAdminChatUsers() {
   const container = document.getElementById('adminChatUserList');
   if (!container) return;
@@ -17870,24 +17793,6 @@ function openAdminChatWithUser(key) {
   document.getElementById('adminChatWinHeader').textContent = (chat.userName || chat.userPhone);
   renderAdminChatMessages(key);
   markAdminChatAsRead(key);
-}
-
-function adminChatGoBack() {
-  adminChatOpenUser = null;
-  const listPanel = document.getElementById('adminChatUserListPanel');
-  const chatWin = document.getElementById('adminChatWindow');
-  if (listPanel) listPanel.classList.remove('hidden-panel');
-  if (chatWin) chatWin.classList.remove('visible-panel');
-  loadAdminChatUsers();
-}
-
-function markAdminChatAsRead(key) {
-  const chat = supportChats[key];
-  if (!chat || !chat.messages) return;
-  const hasUnread = chat.messages.some(m => m.from === 'user' && !m.readByAdmin);
-  if (!hasUnread) return;
-  const updated = chat.messages.map(m => m.from === 'user' ? { ...m, readByAdmin: true } : m);
-  db.ref('supportChats/' + key).update({ messages: updated });
 }
 
 function renderAdminChatMessages(key) {
