@@ -12987,7 +12987,6 @@ function resetDepositModal() {
   document.getElementById('method-pear').classList.remove('selected');
   document.getElementById('method-dpk').classList.remove('selected');
   document.getElementById('method-unka').classList.remove('selected');
-  document.getElementById('method-qtpi').classList.remove('selected');
   document.getElementById('network-mtn').classList.remove('selected');
   document.getElementById('network-airtel').classList.remove('selected');
   
@@ -13001,7 +13000,6 @@ function resetDepositModal() {
   
   document.getElementById('unkaPTSection').style.display = 'none';
   document.getElementById('pearDpkSection').style.display = 'block';
-  document.getElementById('qtpiSection').style.display = 'none';
   document.getElementById('unkaContactSupport').style.display = 'none';
   
   const phoneContainer = document.getElementById('phoneInputContainer');
@@ -13020,15 +13018,7 @@ function selectDepositMethod(method) {
   document.getElementById('method-pear').classList.remove('selected');
   document.getElementById('method-dpk').classList.remove('selected');
   document.getElementById('method-unka').classList.remove('selected');
-  document.getElementById('method-qtpi').classList.remove('selected');
   document.getElementById(`method-${method}`).classList.add('selected');
-  
-  if (method === 'qtpi' && qtpiConfig.locked) {
-    showConfirmModal('🔒 QTPI PAY', qtpiConfig.lockMessage, 'warning');
-    document.getElementById('depositContinueBtn1').disabled = true;
-    return;
-  }
-  
   document.getElementById('depositContinueBtn1').disabled = false;
 }
 
@@ -13164,18 +13154,10 @@ function goToDepositScreen4() {
   if (selectedDepositMethod === 'unka') {
     document.getElementById('unkaPTSection').style.display = 'block';
     document.getElementById('pearDpkSection').style.display = 'none';
-    document.getElementById('qtpiSection').style.display = 'none';
     updateUnkaScreen4();
-  } else if (selectedDepositMethod === 'qtpi') {
-    document.getElementById('unkaPTSection').style.display = 'none';
-    document.getElementById('pearDpkSection').style.display = 'none';
-    document.getElementById('qtpiSection').style.display = 'block';
-    document.getElementById('qtpiAmount').textContent = selectedDepositAmount.toLocaleString() + ' UGX';
-    document.getElementById('depositConfirmBtn').disabled = false;
   } else {
     document.getElementById('unkaPTSection').style.display = 'none';
     document.getElementById('pearDpkSection').style.display = 'block';
-    document.getElementById('qtpiSection').style.display = 'none';
     updateDepositScreen4();
   }
   
@@ -13680,40 +13662,6 @@ function submitDeposit() {
     showConfirmModal('Success', 'UNKA PT deposit request sent! We\'ll verify within 24 hours.', 'success');
     
     unkaScreenshotData = null;
-    
-  } else if (selectedDepositMethod === 'qtpi') {
-    const deposit = {
-      id: Date.now(),
-      userId: currentUser,
-      userPhone: users[currentUser]?.phone,
-      mobileNumber: selectedDepositPhone || 'AUTO',
-      amount: selectedDepositAmount,
-      transactionId: 'QTPI-' + Date.now(),
-      network: selectedDepositNetwork,
-      method: 'QTPI PAY (AUTO)',
-      timestamp: new Date().toISOString(),
-      status: 'approved',
-      autoApproved: true
-    };
-    
-    if (users[currentUser]) {
-      users[currentUser].operatingWallet = (users[currentUser].operatingWallet || 0) + selectedDepositAmount;
-      
-      if (!users[currentUser].transactions) users[currentUser].transactions = [];
-      users[currentUser].transactions.unshift({ 
-        type: 'deposit', 
-        amount: selectedDepositAmount, 
-        date: new Date().toLocaleString(), 
-        desc: `Deposit approved instantly via QTPI PAY` 
-      });
-      
-      saveUsers();
-    }
-    
-    pendingDeposits.push(deposit);
-    saveDeposits();
-    
-    showConfirmModal('✅ SUCCESS!', `Your deposit of ${selectedDepositAmount.toLocaleString()} UGX has been added instantly to your Operating Wallet!`, 'success');
     
   } else {
     const message = document.getElementById('depositMessageInput').value;
