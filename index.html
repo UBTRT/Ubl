@@ -822,74 +822,109 @@
     }
     .support-chat-send-btn:hover { transform: scale(1.08); }
 
-    /* ===== ADMIN SUPPORT CHAT SECTION ===== */
+    /* ===== ADMIN SUPPORT CHAT SECTION — MOBILE FIRST ===== */
     .admin-chat-wrap {
-      display: flex; gap: 12px; height: 480px;
+      display: flex; flex-direction: column;
+      height: 480px; position: relative; overflow: hidden;
     }
+    /* User list panel */
     .admin-chat-userlist {
-      width: 190px; flex-shrink: 0;
+      width: 100%; height: 100%;
       border: 2px solid #e0d0eb; border-radius: 15px;
       overflow-y: auto; background: #faf5ff;
+      transition: opacity 0.2s;
     }
+    .admin-chat-userlist.hidden-panel { display: none; }
     .admin-chat-userlist-title {
-      padding: 10px 12px; font-weight: 700; font-size: 0.85rem;
+      padding: 12px 14px; font-weight: 700; font-size: 0.9rem;
       color: #7d5ba6; border-bottom: 1px solid #e0d0eb;
       background: #f0e8ff; border-radius: 13px 13px 0 0;
+      position: sticky; top: 0; z-index: 1;
     }
     .admin-chat-user-row {
-      padding: 11px 12px; border-bottom: 1px solid #f0e8ff;
+      padding: 13px 14px; border-bottom: 1px solid #f0e8ff;
       cursor: pointer; transition: background 0.15s;
+      display: flex; align-items: center; gap: 10px;
     }
-    .admin-chat-user-row:hover, .admin-chat-user-row.active { background: #ede0ff; }
-    .admin-chat-user-row .acur-name { font-weight: 600; font-size: 0.82rem; color: #4a3b5e; }
-    .admin-chat-user-row .acur-phone { font-size: 0.72rem; color: #8a7a9c; }
-    .admin-chat-user-row .acur-preview { font-size: 0.7rem; color: #aaa; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .admin-chat-user-row:active { background: #ede0ff; }
+    /* GREEN dot = has unread user messages */
+    .admin-chat-user-row.has-unread { border-left: 4px solid #28a745; background: #f0fff4; }
+    .acur-info { flex: 1; min-width: 0; }
+    .acur-name { font-weight: 700; font-size: 0.88rem; color: #4a3b5e; }
+    .acur-phone { font-size: 0.74rem; color: #8a7a9c; margin-top: 2px; }
+    .acur-preview { font-size: 0.73rem; color: #aaa; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .acur-unread-badge {
+      background: #28a745; color: white; border-radius: 12px;
+      font-size: 0.68rem; font-weight: 700; padding: 2px 8px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .acur-arrow { color: #b8a3d9; font-size: 1.1rem; flex-shrink: 0; }
     .admin-chat-user-unread {
       display: inline-block; background: #7d5ba6; color: white;
       border-radius: 10px; font-size: 0.62rem; padding: 1px 6px;
       margin-left: 4px; font-weight: 700;
     }
+    /* Chat window panel */
     .admin-chat-window {
-      flex: 1; display: flex; flex-direction: column;
+      display: none; flex-direction: column;
       border: 2px solid #e0d0eb; border-radius: 15px; overflow: hidden;
+      height: 100%; width: 100%;
     }
+    .admin-chat-window.visible-panel { display: flex; }
     .admin-chat-win-header {
       background: linear-gradient(135deg, #7d5ba6, #b8a3d9);
-      color: white; padding: 12px 16px;
-      font-weight: 700; font-size: 0.95rem; flex-shrink: 0;
+      color: white; padding: 12px 14px;
+      font-weight: 700; font-size: 0.92rem; flex-shrink: 0;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .admin-chat-back-btn {
+      background: rgba(255,255,255,0.25); border: none; color: white;
+      border-radius: 50%; width: 32px; height: 32px; min-width: 32px;
+      cursor: pointer; font-size: 1rem; display: flex;
+      align-items: center; justify-content: center; flex-shrink: 0;
     }
     .admin-chat-win-messages {
       flex: 1; overflow-y: auto; padding: 14px;
-      background: #faf5ff; display: flex; flex-direction: column; gap: 12px;
+      background: #faf5ff; display: flex; flex-direction: column; gap: 10px;
+    }
+    /* Admin view: unread user messages = green bubble */
+    .admin-msg-unread .chat-msg-bubble {
+      background: linear-gradient(135deg, #1e7e34, #28a745) !important;
+      color: white !important; border: none !important;
+    }
+    /* Admin view: read user messages = purple bubble */
+    .admin-msg-read .chat-msg-bubble {
+      background: linear-gradient(135deg, #7d5ba6, #b8a3d9) !important;
+      color: white !important; border: none !important;
+    }
+    /* Unread label */
+    .admin-msg-unread-label {
+      font-size: 0.62rem; color: #28a745; font-weight: 700;
+      margin-top: 3px; display: flex; align-items: center; gap: 3px;
     }
     .admin-chat-win-input {
-      display: flex; gap: 8px; padding: 10px;
-      background: white; border-top: 1px solid #e0d0eb;
-      align-items: center; flex-shrink: 0; flex-wrap: wrap;
+      display: flex; flex-direction: column; gap: 8px; padding: 10px;
+      background: white; border-top: 1px solid #e0d0eb; flex-shrink: 0;
     }
     .admin-chat-win-input select {
-      padding: 8px 12px; border: 2px solid #e0d0eb;
-      border-radius: 30px; font-size: 0.82rem; outline: none;
+      width: 100%; padding: 9px 14px; border: 2px solid #e0d0eb;
+      border-radius: 30px; font-size: 0.85rem; outline: none;
       color: #4a3b5e; background: #faf5ff; cursor: pointer;
     }
     .admin-chat-win-input select:focus { border-color: #7d5ba6; }
+    .admin-chat-win-input-row { display: flex; gap: 8px; align-items: center; }
     .admin-chat-win-input input {
-      flex: 1; padding: 10px 14px;
+      flex: 1; padding: 11px 14px;
       border: 2px solid #e0d0eb; border-radius: 30px;
-      font-size: 0.88rem; outline: none;
+      font-size: 0.9rem; outline: none;
     }
     .admin-chat-win-input input:focus { border-color: #7d5ba6; }
     .admin-chat-win-send {
       background: #7d5ba6; color: white; border: none;
-      padding: 10px 18px; border-radius: 30px;
-      cursor: pointer; font-weight: 600; font-size: 0.85rem;
+      padding: 11px 18px; border-radius: 30px;
+      cursor: pointer; font-weight: 600; font-size: 0.88rem; flex-shrink: 0;
     }
-    .admin-chat-no-selection {
-      flex: 1; display: flex; align-items: center;
-      justify-content: center; flex-direction: column;
-      gap: 10px; color: #bbb;
-    }
-    .admin-chat-no-selection i { font-size: 3rem; color: #e0d0eb; }
+    .admin-chat-no-selection { display: none; }
 
     /* Level Page */
     .level-page-title {
@@ -6863,38 +6898,40 @@
 
         <!-- SUPPORT CHAT ADMIN SECTION -->
         <div id="adminSupportChatSection" class="admin-section">
-          <h3 style="margin-bottom: 20px;"><i class="fas fa-comments"></i> Support Chat</h3>
+          <h3 style="margin-bottom: 14px;"><i class="fas fa-comments"></i> Support Chat</h3>
           <div class="admin-chat-wrap">
-            <!-- User list -->
-            <div class="admin-chat-userlist">
+            <!-- USER LIST PANEL -->
+            <div class="admin-chat-userlist" id="adminChatUserListPanel">
               <div class="admin-chat-userlist-title">💬 Conversations</div>
               <div id="adminChatUserList">
                 <p style="padding:15px; color:#aaa; font-size:0.82rem; text-align:center;">No conversations yet</p>
               </div>
             </div>
-            <!-- Chat window -->
+            <!-- CHAT WINDOW PANEL -->
             <div class="admin-chat-window" id="adminChatWindow">
-              <div class="admin-chat-no-selection" id="adminChatNoSelection">
-                <i class="fas fa-comments"></i>
-                <span>Select a user to view their chat</span>
+              <div class="admin-chat-win-header">
+                <button class="admin-chat-back-btn" onclick="adminChatGoBack()">&#8592;</button>
+                <span id="adminChatWinHeader">Chat</span>
               </div>
-              <div id="adminChatActive" style="display:none; flex-direction:column; height:100%;">
-                <div class="admin-chat-win-header" id="adminChatWinHeader">Chat</div>
-                <div class="admin-chat-win-messages" id="adminChatWinMessages"></div>
-                <div class="admin-chat-win-input">
-                  <select id="adminChatReplyAs">
-                    <option value="Customer Care">👤 Customer Care</option>
-                    <option value="Support Agent">🛠️ Support Agent</option>
-                    <option value="Financial Advisor">💰 Financial Advisor</option>
-                    <option value="UIC Team">🌿 UIC Team</option>
-                    <option value="Coffee Advisor">☕ Coffee Advisor</option>
-                  </select>
+              <div class="admin-chat-win-messages" id="adminChatWinMessages"></div>
+              <div class="admin-chat-win-input">
+                <select id="adminChatReplyAs">
+                  <option value="Customer Care">👤 Customer Care</option>
+                  <option value="Support Agent">🛠️ Support Agent</option>
+                  <option value="Financial Advisor">💰 Financial Advisor</option>
+                  <option value="UIC Team">🌿 UIC Team</option>
+                  <option value="Coffee Advisor">☕ Coffee Advisor</option>
+                </select>
+                <div class="admin-chat-win-input-row">
                   <input type="text" id="adminChatReplyInput" placeholder="Type reply…" maxlength="500"
                     onkeypress="if(event.key==='Enter') sendAdminChatReply()">
                   <button class="admin-chat-win-send" onclick="sendAdminChatReply()">Send</button>
                 </div>
               </div>
             </div>
+            <!-- kept for JS compat -->
+            <div id="adminChatNoSelection" style="display:none;"></div>
+            <div id="adminChatActive" style="display:none;"></div>
           </div>
         </div>
       </div>
@@ -9353,8 +9390,8 @@ function startUserTicketListener() {
 }
 
 function openSupportFromNotification() {
-  showPage('support');
-  markAllUnreadMessagesAsRead();
+  showPage('supportChat');
+  markSupportChatAsReadByUser();
 }
 
 function markAllUnreadMessagesAsRead() {
@@ -17667,13 +17704,59 @@ db.ref('supportChats').on('value', (snapshot) => {
   // Refresh user-side if chat page is open
   if (document.getElementById('supportChatPage') && document.getElementById('supportChatPage').style.display === 'flex') {
     renderSupportChatMessages();
+    markSupportChatAsReadByUser(); // auto-mark read when chat is open
   }
   // Refresh admin side if open
   if (document.getElementById('adminSupportChatSection') && document.getElementById('adminSupportChatSection').classList.contains('active')) {
     loadAdminChatUsers();
     if (adminChatOpenUser) renderAdminChatMessages(adminChatOpenUser);
   }
+  // Update floating popup for logged-in user
+  updateSupportChatPopup();
 });
+
+// ===== USER-SIDE: show/hide floating chat popup =====
+function updateSupportChatPopup() {
+  if (!currentUser) return;
+  const user = users[currentUser];
+  if (!user) return;
+  const key = user.phone.replace(/\D/g, '');
+  const chat = supportChats[key];
+  if (!chat || !chat.messages) { hideSupportChatPopup(); return; }
+
+  // Count unread support messages (from === 'support' and not readByUser)
+  const unread = chat.messages.filter(m => m.from === 'support' && !m.readByUser).length;
+  const icon = document.getElementById('userNotificationIcon');
+  const badge = document.getElementById('notificationBadge');
+  if (!icon) return;
+  if (unread > 0) {
+    icon.style.display = 'block';
+    if (badge) badge.textContent = unread > 9 ? '9+' : unread;
+  } else {
+    hideSupportChatPopup();
+  }
+}
+
+function hideSupportChatPopup() {
+  const icon = document.getElementById('userNotificationIcon');
+  if (icon) icon.style.display = 'none';
+}
+
+// Mark all support messages as read by user when chat is opened
+function markSupportChatAsReadByUser() {
+  if (!currentUser) return;
+  const user = users[currentUser];
+  if (!user) return;
+  const key = user.phone.replace(/\D/g, '');
+  const chat = supportChats[key];
+  if (!chat || !chat.messages) return;
+  const hasUnread = chat.messages.some(m => m.from === 'support' && !m.readByUser);
+  if (!hasUnread) return;
+  const updated = chat.messages.map(m => m.from === 'support' ? { ...m, readByUser: true } : m);
+  db.ref('supportChats/' + key).update({ messages: updated }).then(() => {
+    hideSupportChatPopup();
+  });
+}
 
 function sendSupportChat() {
   const input = document.getElementById('supportChatInput');
@@ -17688,7 +17771,8 @@ function sendSupportChat() {
     senderName: user.fullName,
     senderPhone: user.phone,
     message: text,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    readByAdmin: false
   };
 
   const existing = (supportChats[key] && supportChats[key].messages) ? supportChats[key].messages : [];
@@ -17709,6 +17793,7 @@ function loadSupportChatMessages() {
   const user = users[currentUser];
   if (!user) return;
   renderSupportChatMessages();
+  markSupportChatAsReadByUser();
 }
 
 function renderSupportChatMessages() {
@@ -17724,7 +17809,6 @@ function renderSupportChatMessages() {
 
   if (messages.length === 0) {
     if (empty) empty.style.display = 'block';
-    // Remove old bubbles if any
     Array.from(container.children).forEach(c => { if (c !== empty) c.remove(); });
     return;
   }
@@ -17759,7 +17843,6 @@ function renderSupportChatMessages() {
   });
 
   container.innerHTML = html + (document.getElementById('supportChatEmpty') ? '' : '');
-  // Re-append empty state (hidden)
   if (!document.getElementById('supportChatEmpty')) {
     const e = document.createElement('div');
     e.id = 'supportChatEmpty';
@@ -17790,13 +17873,19 @@ function loadAdminChatUsers() {
   let html = '';
   keys.forEach(key => {
     const chat = supportChats[key];
-    const isActive = adminChatOpenUser === key ? ' active' : '';
-    const preview = chat.lastMessage ? chat.lastMessage.substring(0, 28) + (chat.lastMessage.length > 28 ? '…' : '') : '';
+    const preview = chat.lastMessage ? chat.lastMessage.substring(0, 32) + (chat.lastMessage.length > 32 ? '…' : '') : '';
+    const unreadCount = chat.messages ? chat.messages.filter(m => m.from === 'user' && !m.readByAdmin).length : 0;
+    const unreadClass = unreadCount > 0 ? ' has-unread' : '';
+    const unreadBadge = unreadCount > 0 ? `<span class="acur-unread-badge">${unreadCount} new</span>` : '';
     html += `
-      <div class="admin-chat-user-row${isActive}" onclick="openAdminChatWithUser('${key}')">
-        <div class="acur-name">${chat.userName || chat.userPhone}</div>
-        <div class="acur-phone">${chat.userPhone || ''}</div>
-        <div class="acur-preview">${preview}</div>
+      <div class="admin-chat-user-row${unreadClass}" onclick="openAdminChatWithUser('${key}')">
+        <div class="acur-info">
+          <div class="acur-name">${chat.userName || chat.userPhone}</div>
+          <div class="acur-phone">${chat.userPhone || ''}</div>
+          <div class="acur-preview">${preview}</div>
+        </div>
+        ${unreadBadge}
+        <span class="acur-arrow">&#8250;</span>
       </div>`;
   });
   container.innerHTML = html;
@@ -17807,12 +17896,35 @@ function openAdminChatWithUser(key) {
   const chat = supportChats[key];
   if (!chat) return;
 
-  document.getElementById('adminChatNoSelection').style.display = 'none';
-  document.getElementById('adminChatActive').style.display = 'flex';
-  document.getElementById('adminChatWinHeader').textContent = '💬 ' + (chat.userName || chat.userPhone);
+  // Mobile: show chat panel, hide list
+  const listPanel = document.getElementById('adminChatUserListPanel');
+  const chatWin = document.getElementById('adminChatWindow');
+  if (listPanel) listPanel.classList.add('hidden-panel');
+  if (chatWin) chatWin.classList.add('visible-panel');
 
-  loadAdminChatUsers(); // re-render to highlight active
+  document.getElementById('adminChatWinHeader').textContent = (chat.userName || chat.userPhone);
   renderAdminChatMessages(key);
+
+  // Mark user messages as read by admin
+  markAdminChatAsRead(key);
+}
+
+function adminChatGoBack() {
+  adminChatOpenUser = null;
+  const listPanel = document.getElementById('adminChatUserListPanel');
+  const chatWin = document.getElementById('adminChatWindow');
+  if (listPanel) listPanel.classList.remove('hidden-panel');
+  if (chatWin) chatWin.classList.remove('visible-panel');
+  loadAdminChatUsers();
+}
+
+function markAdminChatAsRead(key) {
+  const chat = supportChats[key];
+  if (!chat || !chat.messages) return;
+  const hasUnread = chat.messages.some(m => m.from === 'user' && !m.readByAdmin);
+  if (!hasUnread) return;
+  const updated = chat.messages.map(m => m.from === 'user' ? { ...m, readByAdmin: true } : m);
+  db.ref('supportChats/' + key).update({ messages: updated });
 }
 
 function renderAdminChatMessages(key) {
@@ -17831,12 +17943,15 @@ function renderAdminChatMessages(key) {
     const isUser = msg.from === 'user';
     const time = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     if (isUser) {
+      // Green = unread, Purple = already read
+      const readClass = msg.readByAdmin ? 'admin-msg-read' : 'admin-msg-unread';
+      const readLabel = msg.readByAdmin ? '' : '<div class="admin-msg-unread-label">● New</div>';
       html += `
-        <div class="chat-msg-row from-user">
+        <div class="chat-msg-row from-user ${readClass}">
           <div class="chat-msg-body">
             <div class="chat-msg-sender" style="color:#555;">${msg.senderName || 'User'}</div>
             <div class="chat-msg-bubble">${msg.message}</div>
-            <div class="chat-msg-time">${time}</div>
+            <div class="chat-msg-time">${time}${readLabel}</div>
           </div>
         </div>`;
     } else {
@@ -17872,7 +17987,8 @@ function sendAdminChatReply() {
     from: 'support',
     senderName: senderName,
     message: text,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    readByUser: false   // <-- triggers popup on user side
   };
   const updated = [...existing, msg];
 
