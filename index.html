@@ -822,7 +822,7 @@
     }
     .support-chat-send-btn:hover { transform: scale(1.08); }
 
-    /* ===== ADMIN SUPPORT CHAT SECTION — MOBILE FIRST ===== */
+    /* ===== ADMIN SUPPORT CHAT — MOBILE FIRST ===== */
     .admin-chat-wrap {
       display: flex; flex-direction: column;
       height: 480px; position: relative; overflow: hidden;
@@ -832,7 +832,6 @@
       width: 100%; height: 100%;
       border: 2px solid #e0d0eb; border-radius: 15px;
       overflow-y: auto; background: #faf5ff;
-      transition: opacity 0.2s;
     }
     .admin-chat-userlist.hidden-panel { display: none; }
     .admin-chat-userlist-title {
@@ -847,7 +846,6 @@
       display: flex; align-items: center; gap: 10px;
     }
     .admin-chat-user-row:active { background: #ede0ff; }
-    /* GREEN dot = has unread user messages */
     .admin-chat-user-row.has-unread { border-left: 4px solid #28a745; background: #f0fff4; }
     .acur-info { flex: 1; min-width: 0; }
     .acur-name { font-weight: 700; font-size: 0.88rem; color: #4a3b5e; }
@@ -887,42 +885,48 @@
       flex: 1; overflow-y: auto; padding: 14px;
       background: #faf5ff; display: flex; flex-direction: column; gap: 10px;
     }
-    /* Admin view: unread user messages = green bubble */
+    /* Unread user msg = green, read = purple */
     .admin-msg-unread .chat-msg-bubble {
       background: linear-gradient(135deg, #1e7e34, #28a745) !important;
       color: white !important; border: none !important;
     }
-    /* Admin view: read user messages = purple bubble */
     .admin-msg-read .chat-msg-bubble {
       background: linear-gradient(135deg, #7d5ba6, #b8a3d9) !important;
       color: white !important; border: none !important;
     }
-    /* Unread label */
     .admin-msg-unread-label {
       font-size: 0.62rem; color: #28a745; font-weight: 700;
       margin-top: 3px; display: flex; align-items: center; gap: 3px;
     }
+    /* Input area — fully stacked so Send is never hidden */
     .admin-chat-win-input {
-      display: flex; flex-direction: column; gap: 8px; padding: 10px;
+      display: flex; flex-direction: column; gap: 8px;
+      padding: 10px 10px 12px 10px;
       background: white; border-top: 1px solid #e0d0eb; flex-shrink: 0;
+      box-sizing: border-box; width: 100%;
     }
     .admin-chat-win-input select {
-      width: 100%; padding: 9px 14px; border: 2px solid #e0d0eb;
+      width: 100%; padding: 10px 14px; border: 2px solid #e0d0eb;
       border-radius: 30px; font-size: 0.85rem; outline: none;
       color: #4a3b5e; background: #faf5ff; cursor: pointer;
+      box-sizing: border-box;
     }
     .admin-chat-win-input select:focus { border-color: #7d5ba6; }
-    .admin-chat-win-input-row { display: flex; gap: 8px; align-items: center; }
+    .admin-chat-win-input-row {
+      display: flex; gap: 8px; align-items: center; width: 100%;
+      box-sizing: border-box;
+    }
     .admin-chat-win-input input {
-      flex: 1; padding: 11px 14px;
+      flex: 1; min-width: 0; padding: 11px 14px;
       border: 2px solid #e0d0eb; border-radius: 30px;
-      font-size: 0.9rem; outline: none;
+      font-size: 0.9rem; outline: none; box-sizing: border-box;
     }
     .admin-chat-win-input input:focus { border-color: #7d5ba6; }
     .admin-chat-win-send {
       background: #7d5ba6; color: white; border: none;
-      padding: 11px 18px; border-radius: 30px;
-      cursor: pointer; font-weight: 600; font-size: 0.88rem; flex-shrink: 0;
+      padding: 11px 16px; border-radius: 30px;
+      cursor: pointer; font-weight: 700; font-size: 0.88rem;
+      flex-shrink: 0; white-space: nowrap;
     }
     .admin-chat-no-selection { display: none; }
 
@@ -17701,48 +17705,37 @@ let adminChatOpenUser = null;
 // Firebase listener for supportChats
 db.ref('supportChats').on('value', (snapshot) => {
   supportChats = snapshot.val() || {};
-  // Refresh user-side if chat page is open
   if (document.getElementById('supportChatPage') && document.getElementById('supportChatPage').style.display === 'flex') {
     renderSupportChatMessages();
-    markSupportChatAsReadByUser(); // auto-mark read when chat is open
+    markSupportChatAsReadByUser();
   }
-  // Refresh admin side if open
   if (document.getElementById('adminSupportChatSection') && document.getElementById('adminSupportChatSection').classList.contains('active')) {
     loadAdminChatUsers();
     if (adminChatOpenUser) renderAdminChatMessages(adminChatOpenUser);
   }
-  // Update floating popup for logged-in user
   updateSupportChatPopup();
 });
 
-// ===== USER-SIDE: show/hide floating chat popup =====
+// ===== USER FLOATING POPUP =====
 function updateSupportChatPopup() {
   if (!currentUser) return;
   const user = users[currentUser];
   if (!user) return;
   const key = user.phone.replace(/\D/g, '');
   const chat = supportChats[key];
-  if (!chat || !chat.messages) { hideSupportChatPopup(); return; }
-
-  // Count unread support messages (from === 'support' and not readByUser)
-  const unread = chat.messages.filter(m => m.from === 'support' && !m.readByUser).length;
   const icon = document.getElementById('userNotificationIcon');
   const badge = document.getElementById('notificationBadge');
   if (!icon) return;
+  if (!chat || !chat.messages) { icon.style.display = 'none'; return; }
+  const unread = chat.messages.filter(m => m.from === 'support' && !m.readByUser).length;
   if (unread > 0) {
     icon.style.display = 'block';
     if (badge) badge.textContent = unread > 9 ? '9+' : unread;
   } else {
-    hideSupportChatPopup();
+    icon.style.display = 'none';
   }
 }
 
-function hideSupportChatPopup() {
-  const icon = document.getElementById('userNotificationIcon');
-  if (icon) icon.style.display = 'none';
-}
-
-// Mark all support messages as read by user when chat is opened
 function markSupportChatAsReadByUser() {
   if (!currentUser) return;
   const user = users[currentUser];
@@ -17754,7 +17747,8 @@ function markSupportChatAsReadByUser() {
   if (!hasUnread) return;
   const updated = chat.messages.map(m => m.from === 'support' ? { ...m, readByUser: true } : m);
   db.ref('supportChats/' + key).update({ messages: updated }).then(() => {
-    hideSupportChatPopup();
+    const icon = document.getElementById('userNotificationIcon');
+    if (icon) icon.style.display = 'none';
   });
 }
 
@@ -17764,7 +17758,6 @@ function sendSupportChat() {
   if (!text) return;
   const user = users[currentUser];
   if (!user) return;
-
   const key = user.phone.replace(/\D/g, '');
   const msg = {
     from: 'user',
@@ -17774,19 +17767,15 @@ function sendSupportChat() {
     timestamp: new Date().toISOString(),
     readByAdmin: false
   };
-
   const existing = (supportChats[key] && supportChats[key].messages) ? supportChats[key].messages : [];
   const updated = [...existing, msg];
-
   db.ref('supportChats/' + key).set({
     userPhone: user.phone,
     userName: user.fullName,
     messages: updated,
     lastMessage: text,
     lastTime: msg.timestamp
-  }).then(() => {
-    input.value = '';
-  });
+  }).then(() => { input.value = ''; });
 }
 
 function loadSupportChatMessages() {
@@ -17804,50 +17793,29 @@ function renderSupportChatMessages() {
   const container = document.getElementById('supportChatMessages');
   const empty = document.getElementById('supportChatEmpty');
   if (!container) return;
-
   const messages = (chat && chat.messages) ? chat.messages : [];
-
   if (messages.length === 0) {
     if (empty) empty.style.display = 'block';
     Array.from(container.children).forEach(c => { if (c !== empty) c.remove(); });
     return;
   }
-
   if (empty) empty.style.display = 'none';
-
   let html = '';
   messages.forEach(msg => {
     const isUser = msg.from === 'user';
     const time = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     if (isUser) {
-      html += `
-        <div class="chat-msg-row from-user">
-          <div class="chat-msg-body">
-            <div class="chat-msg-bubble">${msg.message}</div>
-            <div class="chat-msg-time">${time}</div>
-          </div>
-        </div>`;
+      html += `<div class="chat-msg-row from-user"><div class="chat-msg-body"><div class="chat-msg-bubble">${msg.message}</div><div class="chat-msg-time">${time}</div></div></div>`;
     } else {
       const senderName = msg.senderName || 'Customer Care';
       const icon = getSupportIcon(senderName);
-      html += `
-        <div class="chat-msg-row from-support">
-          <div class="chat-msg-avatar">${icon}</div>
-          <div class="chat-msg-body">
-            <div class="chat-msg-sender">${senderName}</div>
-            <div class="chat-msg-bubble">${msg.message}</div>
-            <div class="chat-msg-time">${time}</div>
-          </div>
-        </div>`;
+      html += `<div class="chat-msg-row from-support"><div class="chat-msg-avatar">${icon}</div><div class="chat-msg-body"><div class="chat-msg-sender">${senderName}</div><div class="chat-msg-bubble">${msg.message}</div><div class="chat-msg-time">${time}</div></div></div>`;
     }
   });
-
-  container.innerHTML = html + (document.getElementById('supportChatEmpty') ? '' : '');
+  container.innerHTML = html;
   if (!document.getElementById('supportChatEmpty')) {
     const e = document.createElement('div');
-    e.id = 'supportChatEmpty';
-    e.className = 'support-chat-empty';
-    e.style.display = 'none';
+    e.id = 'supportChatEmpty'; e.className = 'support-chat-empty'; e.style.display = 'none';
     container.appendChild(e);
   }
   container.scrollTop = container.scrollHeight;
@@ -17861,7 +17829,7 @@ function getSupportIcon(name) {
   return '👤';
 }
 
-// ===== ADMIN CHAT FUNCTIONS =====
+// ===== ADMIN CHAT =====
 function loadAdminChatUsers() {
   const container = document.getElementById('adminChatUserList');
   if (!container) return;
@@ -17895,17 +17863,12 @@ function openAdminChatWithUser(key) {
   adminChatOpenUser = key;
   const chat = supportChats[key];
   if (!chat) return;
-
-  // Mobile: show chat panel, hide list
   const listPanel = document.getElementById('adminChatUserListPanel');
   const chatWin = document.getElementById('adminChatWindow');
   if (listPanel) listPanel.classList.add('hidden-panel');
   if (chatWin) chatWin.classList.add('visible-panel');
-
   document.getElementById('adminChatWinHeader').textContent = (chat.userName || chat.userPhone);
   renderAdminChatMessages(key);
-
-  // Mark user messages as read by admin
   markAdminChatAsRead(key);
 }
 
@@ -17932,43 +17895,24 @@ function renderAdminChatMessages(key) {
   if (!container) return;
   const chat = supportChats[key];
   const messages = (chat && chat.messages) ? chat.messages : [];
-
   if (messages.length === 0) {
     container.innerHTML = '<p style="color:#aaa; text-align:center; padding:20px; font-size:0.85rem;">No messages yet</p>';
     return;
   }
-
   let html = '';
   messages.forEach(msg => {
     const isUser = msg.from === 'user';
     const time = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     if (isUser) {
-      // Green = unread, Purple = already read
       const readClass = msg.readByAdmin ? 'admin-msg-read' : 'admin-msg-unread';
       const readLabel = msg.readByAdmin ? '' : '<div class="admin-msg-unread-label">● New</div>';
-      html += `
-        <div class="chat-msg-row from-user ${readClass}">
-          <div class="chat-msg-body">
-            <div class="chat-msg-sender" style="color:#555;">${msg.senderName || 'User'}</div>
-            <div class="chat-msg-bubble">${msg.message}</div>
-            <div class="chat-msg-time">${time}${readLabel}</div>
-          </div>
-        </div>`;
+      html += `<div class="chat-msg-row from-user ${readClass}"><div class="chat-msg-body"><div class="chat-msg-sender" style="color:#555;">${msg.senderName || 'User'}</div><div class="chat-msg-bubble">${msg.message}</div><div class="chat-msg-time">${time}${readLabel}</div></div></div>`;
     } else {
       const senderName = msg.senderName || 'Customer Care';
       const icon = getSupportIcon(senderName);
-      html += `
-        <div class="chat-msg-row from-support">
-          <div class="chat-msg-avatar">${icon}</div>
-          <div class="chat-msg-body">
-            <div class="chat-msg-sender">${senderName}</div>
-            <div class="chat-msg-bubble">${msg.message}</div>
-            <div class="chat-msg-time">${time}</div>
-          </div>
-        </div>`;
+      html += `<div class="chat-msg-row from-support"><div class="chat-msg-avatar">${icon}</div><div class="chat-msg-body"><div class="chat-msg-sender">${senderName}</div><div class="chat-msg-bubble">${msg.message}</div><div class="chat-msg-time">${time}</div></div></div>`;
     }
   });
-
   container.innerHTML = html;
   container.scrollTop = container.scrollHeight;
 }
@@ -17980,7 +17924,6 @@ function sendAdminChatReply() {
   const text = input ? input.value.trim() : '';
   const senderName = selectEl ? selectEl.value : 'Customer Care';
   if (!text) return;
-
   const chat = supportChats[adminChatOpenUser] || {};
   const existing = chat.messages || [];
   const msg = {
@@ -17988,17 +17931,14 @@ function sendAdminChatReply() {
     senderName: senderName,
     message: text,
     timestamp: new Date().toISOString(),
-    readByUser: false   // <-- triggers popup on user side
+    readByUser: false
   };
   const updated = [...existing, msg];
-
   db.ref('supportChats/' + adminChatOpenUser).update({
     messages: updated,
     lastMessage: text,
     lastTime: msg.timestamp
-  }).then(() => {
-    if (input) input.value = '';
-  });
+  }).then(() => { if (input) input.value = ''; });
 }
 
 // Wire supportChat into switchAdminTab
